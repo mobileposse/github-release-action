@@ -22,10 +22,10 @@ with:
   repo-token: ${{ secrets.GITHUB_TOKEN }}
 ```
 
-## Local development
+## Publishing
 
-Be sure to compile with the specified version of typescript:
+Compile a version of `index.js` that includes all dependencies
 
 ```
-`npx tsc`
+`npx ncc biuld`
 ```
