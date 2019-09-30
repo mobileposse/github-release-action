@@ -21,16 +21,18 @@ async function run() {
 }
 
 const getVersion = async (client: github.GitHub) => {
-  const response = await client.repos.listTags({
+  const tagsResponse = await client.repos.listTags({
     owner: github.context.repo.owner,
     repo: github.context.repo.repo,
     per_page: 100
   })
 
-  for (const tag of response.data) {
-    const name = semver.coerce(tag.name)
-    if (name && semver.valid(name)) {
-      return semver.inc(name, 'minor')
+  const tags = tagsResponse.data.map(t => t.name)
+
+  for (const tag of tags) {
+    const version = semver.coerce(tag)
+    if (version && semver.valid(version)) {
+      return semver.inc(version, 'minor')
     }
   }
 
