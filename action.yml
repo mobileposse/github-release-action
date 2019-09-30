@@ -1,0 +1,9 @@
+name: 'Secret Incrementer'
+description: 'Increments a version number stored as a Github secret'
+author: 'MobilePossse'
+inputs:
+  repo-token:
+    description: 'The GITHUB_TOKEN secret'
+runs:
+  using: 'node12'
+  main: 'dist/index.js'
