@@ -27,7 +27,7 @@ const getVersion = async (client: github.GitHub) => {
     per_page: 100
   })
 
-  for (const tag of response) {
+  for (const tag of response.data) {
     const name = semver.coerce(tag.name)
     if (name && semver.valid(name)) {
       return semver.inc(name, 'minor')
