@@ -27,7 +27,7 @@ with:
 Compile a version of `index.js` that includes all dependencies
 
 ```
-npx ncc build
+npx ncc build dist/index.js -o lib
 ```
 
 ## Local Testing
