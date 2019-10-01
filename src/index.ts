@@ -4,16 +4,12 @@ import * as semver from 'semver'
 
 async function run() {
   try {
-    const token = core.getInput('repo-token', { required: true })
+    const token = core.getInput('repo_token', { required: true })
     const client = new github.GitHub(token)
 
-    console.log('Getting current version number from Github tags')
+    core.info('Getting current version number from Github tags')
     const version = await getVersion(client)
-
-    console.log('Creating the new release')
-    await createRelease(client, version || 'v0.0.0')
-
-    github.context.sha
+    await createRelease(client, version)
   } catch (error) {
     core.error(error)
     core.setFailed(error.message)
@@ -32,7 +28,8 @@ const getVersion = async (client: github.GitHub) => {
   for (const tag of tags) {
     const version = semver.coerce(tag)
     if (version && semver.valid(version)) {
-      return semver.inc(version, 'minor')
+      const newVersion = semver.inc(version, 'minor') || 'v0.0.0'
+      return `v${semver.major(newVersion)}.${semver.minor(newVersion)}`
     }
   }
 
@@ -40,10 +37,11 @@ const getVersion = async (client: github.GitHub) => {
 }
 
 const createRelease = async (client: github.GitHub, version: string) => {
+  core.info(`Creating new release ${version}`)
   await client.repos.createRelease({
     owner: github.context.repo.owner,
     repo: github.context.repo.repo,
-    tag_name: `v${version}`,
+    tag_name: version,
     target_commitish: github.context.sha,
     prerelease: true
   })

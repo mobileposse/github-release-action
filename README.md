@@ -19,7 +19,7 @@ The time we greeted you.
 ```yaml
 uses: mobileposse/github-release-action@v1
 with:
-  repo-token: ${{ secrets.GITHUB_TOKEN }}
+  repo_token: ${{ secrets.GITHUB_TOKEN }}
 ```
 
 ## Publishing
@@ -27,5 +27,11 @@ with:
 Compile a version of `index.js` that includes all dependencies
 
 ```
-`npx ncc biuld`
+npx ncc build
+```
+
+## Local Testing
+
+```
+INPUT_REPO_TOKEN='your token here' GITHUB_REPOSITORY='org/repo' node lib/index.js
 ```
