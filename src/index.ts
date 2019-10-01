@@ -7,10 +7,10 @@ async function run() {
     const token = core.getInput('repo-token', { required: true })
     const client = new github.GitHub(token)
 
-    core.debug('getting current version number from Github tags')
+    console.log('Getting current version number from Github tags')
     const version = await getVersion(client)
 
-    core.debug('creating the new release')
+    console.log('Creating the new release')
     await createRelease(client, version || 'v0.0.0')
 
     github.context.sha
