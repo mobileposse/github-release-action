@@ -23,7 +23,7 @@ uses: mobileposse/github-release-action@v1
 with:
   repo_token: ${{ secrets.GITHUB_TOKEN }}
   version: v1.0.0
-  zip_filename: 'some_file.zip'
+  filename: 'some_file.zip'
 ```
 
 ## Publishing
