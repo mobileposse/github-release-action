@@ -1,49 +1,47 @@
 import * as core from '@actions/core'
 import * as github from '@actions/github'
-import * as semver from 'semver'
+const mime = require('mime-types')
+const Octokit = require('@octokit/rest')
+const fs = require('fs')
 
 async function run() {
   try {
     const token = core.getInput('repo_token', { required: true })
+    const version = core.getInput('version', { required: true })
     const client = new github.GitHub(token)
 
-    core.info('Getting current version number from Github tags')
-    const version = await getVersion(client)
-    await createRelease(client, version)
+    const uploadUrl = await createRelease(client, version)
+    await attachAsset(client, uploadUrl, core.getInput('filename'))
   } catch (error) {
     core.error(error)
     core.setFailed(error.message)
   }
 }
 
-const getVersion = async (client: github.GitHub) => {
-  const tagsResponse = await client.repos.listTags({
-    owner: github.context.repo.owner,
-    repo: github.context.repo.repo,
-    per_page: 100
-  })
-
-  const tags = tagsResponse.data.map(t => t.name)
-
-  for (const tag of tags) {
-    const version = semver.coerce(tag)
-    if (version && semver.valid(version)) {
-      const newVersion = semver.inc(version, 'minor') || 'v0.0.0'
-      return `v${semver.major(newVersion)}.${semver.minor(newVersion)}`
-    }
-  }
-
-  throw new Error('Unable to locate a semver compliant tag')
-}
-
 const createRelease = async (client: github.GitHub, version: string) => {
   core.info(`Creating new release ${version}`)
-  await client.repos.createRelease({
+  const response = await client.repos.createRelease({
     owner: github.context.repo.owner,
     repo: github.context.repo.repo,
     tag_name: version,
     target_commitish: github.context.sha,
     prerelease: true
+  })
+  const uploadUrl = response.data.upload_url
+  console.log(`uploadUrl: ${uploadUrl}`)
+  return uploadUrl
+}
+
+const attachAsset = async (client: github.GitHub, url: string, filename: string) => {
+  const contentLength = fs.statSync(filename).size
+  await client.repos.uploadReleaseAsset({
+    url,
+    file: fs.createReadStream(filename),
+    headers: {
+      'content-type': mime.lookup(filename),
+      'content-length': contentLength
+    },
+    name: filename
   })
 }
 

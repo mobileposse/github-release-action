@@ -4,15 +4,17 @@ This action scans the repository tags and grabs the latest semver compliant tag.
 
 ## Inputs
 
-### `repo-token`
+### `repo_token`
 
 **Required** Github token to use for creating the release
 
-## Outputs
+### `version`
 
-### `time`
+**Required** Version to use as a tag for the release
 
-The time we greeted you.
+### `zip_filename`
+
+The name of a local zip file to attach to the release
 
 ## Example usage
 
@@ -20,6 +22,8 @@ The time we greeted you.
 uses: mobileposse/github-release-action@v1
 with:
   repo_token: ${{ secrets.GITHUB_TOKEN }}
+  version: v1.0.0
+  zip_filename: 'some_file.zip'
 ```
 
 ## Publishing
@@ -33,5 +37,5 @@ npx ncc build dist/index.js -o lib
 ## Local Testing
 
 ```
-INPUT_REPO_TOKEN='your token here' GITHUB_REPOSITORY='org/repo' node lib/index.js
+INPUT_REPO_TOKEN='your token here' GITHUB_REPOSITORY='org/repo' INPUT_FILENAME=somefilename-1.0.0.zip INPUT_VERSION=v1.0.0 node lib/index.js
 ```
