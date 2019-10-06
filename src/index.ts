@@ -34,6 +34,8 @@ const createRelease = async (client: github.GitHub, version: string) => {
 
 const attachAsset = async (client: github.GitHub, url: string, filename: string) => {
   const contentLength = fs.statSync(filename).size
+
+  console.info('stats: ' + JSON.stringify(fs.statSync(filename)))
   await client.repos.uploadReleaseAsset({
     url,
     file: fs.createReadStream(filename),
