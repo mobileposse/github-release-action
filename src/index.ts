@@ -23,7 +23,7 @@ const createRelease = async (client: github.GitHub, version: string) => {
   const response = await client.repos.createRelease({
     owner: github.context.repo.owner,
     repo: github.context.repo.repo,
-    tag_name: version,
+    tag_name: `v${version}`,
     target_commitish: github.context.sha,
     prerelease: true
   })
