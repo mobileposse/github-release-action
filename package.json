@@ -18,7 +18,6 @@
   "dependencies": {
     "@actions/core": "^1.1.1",
     "@actions/github": "^1.1.0",
-    "mime-types": "^2.1.24",
     "semver": "^6.3.0"
   },
   "devDependencies": {

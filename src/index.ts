@@ -1,8 +1,5 @@
 import * as core from '@actions/core'
 import * as github from '@actions/github'
-const mime = require('mime-types')
-const fs = require('fs')
-const path = require('path')
 
 async function run() {
   try {
