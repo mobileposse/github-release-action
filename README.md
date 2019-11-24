@@ -1,6 +1,6 @@
 # Github Release action
 
-This action scans the repository tags and grabs the latest semver compliant tag. The minor build number is then incremented and a draft release is created.
+This action tags and creates a new Github release based on the provided inputs.
 
 ## Inputs
 
@@ -12,9 +12,11 @@ This action scans the repository tags and grabs the latest semver compliant tag.
 
 **Required** Version to use as a tag for the release
 
-### `zip_filename`
+## Outputs
 
-The name of a local zip file to attach to the release
+### `upload_url`
+
+The url to use for uploading artifacts to the release
 
 ## Example usage
 
@@ -23,7 +25,6 @@ uses: mobileposse/github-release-action@v1
 with:
   repo_token: ${{ secrets.GITHUB_TOKEN }}
   version: v1.0.0
-  filename: 'some_file.zip'
 ```
 
 ## Publishing
@@ -37,5 +38,5 @@ npx ncc build dist/index.js -o lib
 ## Local Testing
 
 ```
-INPUT_REPO_TOKEN='your token here' GITHUB_REPOSITORY='org/repo' INPUT_FILENAME=somefilename-1.0.0.zip INPUT_VERSION=v1.0.0 node lib/index.js
+INPUT_REPO_TOKEN='your token here' GITHUB_REPOSITORY='org/repo' INPUT_VERSION=v1.0.0 node lib/index.js
 ```

@@ -11,7 +11,7 @@ async function run() {
     const client = new github.GitHub(token)
 
     const uploadUrl = await createRelease(client, version)
-    await attachAsset(client, uploadUrl, core.getInput('filename'))
+    core.setOutput('upload_url', uploadUrl)
   } catch (error) {
     core.error(error)
     core.setFailed(error.message)
@@ -30,21 +30,6 @@ const createRelease = async (client: github.GitHub, version: string) => {
   const uploadUrl = response.data.upload_url
   console.log(`uploadUrl: ${uploadUrl}`)
   return uploadUrl
-}
-
-const attachAsset = async (client: github.GitHub, url: string, filename: string) => {
-  const contentLength = fs.statSync(filename).size
-
-  console.info('stats: ' + JSON.stringify(fs.statSync(filename)))
-  await client.repos.uploadReleaseAsset({
-    url,
-    file: fs.createReadStream(filename),
-    headers: {
-      'content-type': mime.lookup(filename),
-      'content-length': contentLength
-    },
-    name: path.basename(filename)
-  })
 }
 
 run()
