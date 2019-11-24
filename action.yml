@@ -1,13 +1,14 @@
 name: 'Github Release Action'
-description: 'Creates a new Github release and optionally uploads an artifact'
+description: 'Creates a new Github release and outputs the upload URL for optional uploading of artifacts'
 author: 'MobilePossse'
 inputs:
   repo_token:
     description: 'The GITHUB_TOKEN secret'
   version:
     description: 'Version number to use for the release tag'
-  filename:
-    description: 'Name of the file to attach to the release'
+outputs:
+  upload_url:
+    description: 'URL for optionally uploading artifacts (https://uploads.github.com/repos/[org]/[project]/releases/[release id]/assets{?name,label})'
 runs:
   using: 'node12'
   main: 'lib/index.js'

@@ -28,7 +28,7 @@ const createRelease = async (client: github.GitHub, version: string) => {
     prerelease: true
   })
   const uploadUrl = response.data.upload_url
-  console.log(`uploadUrl: ${uploadUrl}`)
+  console.log(`upload_url: ${uploadUrl}`)
   return uploadUrl
 }
 
